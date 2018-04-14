@@ -1,1 +1,6 @@
 Integrate Docker
+
+Approach 1: Use Process Injection
+
+Approach 2: Multiple DMTCP coordinators
+
