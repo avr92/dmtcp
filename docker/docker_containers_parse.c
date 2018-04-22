@@ -9,6 +9,10 @@
 
 char containers[20][100];
 
+char deduplicated_container[20][100];
+
+char container_is_dup[20];
+
 int main()
 {
 
@@ -68,7 +72,6 @@ int main()
    			
    			if (j != 1) {
    				docker_container[j] = '\0';
-   				printf("%d\n", j);
    				printf("Docker container id: %s\n", docker_container);
    				int l = 8;
    				i = 0;
@@ -78,17 +81,40 @@ int main()
    					i++;
    				}
    				containers[container_cnt][i] = '\0';
+          container_is_dup[container_cnt] = 'F';
    				container_cnt++;
-   			}
-        	fclose(fp);
-        }
+        }	
+        fclose(fp);
+      }
     }
+
+    int i = 0;
+    while (i < container_cnt)
+    {
+      int j = i+1;
+      if (container_is_dup[i] == 'T')
+      {
+        i++;
+        continue;
+      }
+
+      while (j < container_cnt)
+      {
+        if(strcmp(containers[i], containers[j]) == 0) {
+          container_is_dup[j] = 'T';
+        }
+        j++;
+      }
+      i++;
+    }
+    
 
     printf("\n List of container IDs: \n");
     int k = 0;
     while (k < container_cnt)
     {
-    	printf("%s\n", containers[k]);
+      if(container_is_dup[k] == 'F')
+    	 printf("%s\n", containers[k]);
     	k++;
     }
 
