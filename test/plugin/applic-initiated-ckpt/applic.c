@@ -39,7 +39,7 @@ main()
     original_generation = dmtcp_get_generation();
   }
 
-
+while(1){ }
   int retval = dmtcp_checkpoint();
   if (retval == DMTCP_AFTER_CHECKPOINT) {
     // Wait long enough for checkpoint request to be written out.
@@ -49,6 +49,7 @@ main()
 
     printf("*** dmtcp_checkpoint: This program has now invoked a checkpoint.\n"
            "      It will resume its execution next.\n");
+
   } else if (retval == DMTCP_AFTER_RESTART) {
     printf("*** dmtcp_checkpoint: This program is now restarting.\n");
   } else if (retval == DMTCP_NOT_PRESENT) {
@@ -60,5 +61,6 @@ main()
   if (retval == DMTCP_AFTER_CHECKPOINT) {
     printf("*** Execute ./dmtcp_restart_script.sh to restart.\n");
   }
+
   return 0;
 }

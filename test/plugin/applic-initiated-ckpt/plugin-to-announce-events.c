@@ -23,6 +23,7 @@ static void
 checkpoint()
 {
   printf("Plugin(%s:%d): about to checkpoint.\n", __FILE__, __LINE__);
+  system("docker checkpoint rm looper ckp1");
   system("docker checkpoint create looper ckp1");
 }
 
