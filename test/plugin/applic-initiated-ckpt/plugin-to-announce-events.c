@@ -22,14 +22,16 @@ applic_initiated_ckpt_event_hook(DmtcpEvent_t event, DmtcpEventData_t *data)
 static void
 checkpoint()
 {
-  printf("Plugin(%s:%d): about to checkpoint.\n", __FILE__, __LINE__);
   system("docker checkpoint rm looper ckp1");
   system("docker checkpoint create looper ckp1");
+
+  printf("Plugin(%s:%d): about to checkpoint.\n", __FILE__, __LINE__);
 }
 
 static void
 resume()
 {
+
   printf("Plugin(%s:%d): done checkpointing.\n", __FILE__, __LINE__);
 }
 
