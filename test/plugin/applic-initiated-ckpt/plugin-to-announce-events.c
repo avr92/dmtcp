@@ -22,8 +22,8 @@ applic_initiated_ckpt_event_hook(DmtcpEvent_t event, DmtcpEventData_t *data)
 static void
 checkpoint()
 {
-  system("/home/vagrant/new-vm/dmtcp/bin/dmtcp_command -p 8080 --checkpoint");
   printf("Plugin(%s:%d): about to checkpoint.\n", __FILE__, __LINE__);
+  system("docker checkpoint create looper ckp1");
 }
 
 static void
@@ -35,6 +35,7 @@ resume()
 static void
 restart()
 {
+  system("docker start --checkpoint ckp1 looper");
   printf("Plugin(%s:%d): done restarting from checkpoint image.\n",
          __FILE__, __LINE__);
 }
