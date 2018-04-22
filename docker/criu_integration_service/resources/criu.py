@@ -12,6 +12,6 @@ class CRIU(Resource):
         if not json_data:
                return {'message': 'No input data provided'}, 400
 
-        subprocess.call(['echo', 'Hello $USER'], shell=True)
+        os.system(" docker run -d --name looper --security-opt seccomp:unconfined busybox /bin/sh -c 'i=0; while true; do echo $i; i=$(expr $i + 1); sleep 1; done'")
         result = "CRIU Checkpoint"
         return {'status': "success", 'data': result}, 201
