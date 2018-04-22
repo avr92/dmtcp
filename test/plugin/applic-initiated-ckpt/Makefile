@@ -11,7 +11,7 @@ LIBOBJS = plugin-to-announce-events.o
 
 # Modify if your DMTCP_ROOT is located elsewhere.
 ifndef DMTCP_ROOT
-  DMTCP_ROOT=../../..
+  DMTCP_ROOT=/home/swapnil/dmtcp/
 endif
 DMTCP_INCLUDE=${DMTCP_ROOT}/include
 
@@ -19,7 +19,7 @@ override CFLAGS += -fPIC -I${DMTCP_INCLUDE}
 override CXXFLAGS += -fPIC -I${DMTCP_INCLUDE}
 LINK = ${CC}
 
-DEMO_PORT=7781
+DEMO_PORT=7779
 
 default: ${LIBNAME}.so applic
 
@@ -29,12 +29,6 @@ applic: applic.c
 	${CC} ${CFLAGS} -o $@ $< -ldl
 
 check: ${LIBNAME}.so applic
-	@ echo ""
-	@ echo "============ TESTING ./applic _WITHOUT_ DMTCP ================"
-	- ./applic
-	@ echo '(Application has exited.)'
-	@ echo ""
-	@ sleep 3
 	@ echo "============ TESTING ./applic WITH DMTCP ================="
 	# Kill an old coordinator on this port if present, just in case.
 	@ ${DMTCP_ROOT}/bin/dmtcp_command --quit --quiet \
@@ -43,10 +37,11 @@ check: ${LIBNAME}.so applic
 	  --with-plugin $$PWD/${LIBNAME}.so ./applic
 	@ echo ""
 	@ sleep 5
+
+res:
 	@ echo "===== RESTARTING USING ./dmtcp_restart_script.sh ============="
 	./dmtcp_restart_script.sh
 	@ echo ""
-	@ echo "ALL TESTS SUCCEEDED"
 
 ${LIBNAME}.so: ${LIBOBJS}
 	${LINK} -shared -fPIC -o $@ $^
