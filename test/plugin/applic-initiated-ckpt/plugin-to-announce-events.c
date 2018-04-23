@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 #include "dmtcp.h"
 
 static void
@@ -28,6 +29,7 @@ checkpoint()
 {
   system("docker ps > file");
   system("python parse.py");
+
   int fd = open("filep",O_RDONLY);
   char buf[1000];
   int num = read(fd,buf,0);
@@ -38,27 +40,29 @@ checkpoint()
       cont[i][j] = buf[j];
     }
   }
-  printf("Here");
+
   for(j=0;j<12;j++){
     printf("%c",cont[1][j]);
   }
-  
-	printf("Done");
+
+  printf("Here");
+  printf("Done");
+  fflush(stdout);
+
+
 char cmd_rm[50];
     char cmd_create[50];
-    char argv[3]; 
+    char argv[3];
     strcpy(cmd_rm,"docker checkpoint rm ");
     strcpy(cmd_create,"docker checkpoint create ");
     argv[1] = cont[1];
-	printf("%s",cont[1]);
+    printf("%s",cont[1]);
     argv[2] = " ckp1";
     argv[3] = NULL;
-    strcat(cmd_rm,argv);
-    strcat(cmd_create,argv);
     system(cmd_rm);
     system(cmd_create);
     printf("CKP");
-close(fd);
+    close(fd);
 }
 static void
 resume()
