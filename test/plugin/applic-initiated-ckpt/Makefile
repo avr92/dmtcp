@@ -26,19 +26,18 @@ default: ${LIBNAME}.so applic
 # NOTE:  ${CFLAGS} expands to invoke '-fPIC -I${DMTCP_INCLUDE}'
 #        This is required for use with DMTCP.
 applic: applic.c
-	${CC} ${CFLAGS} -o $@ $< -ldl
+	${CC} ${CFLAGS} -o $@ $< -ldl -Werror
 
 check: ${LIBNAME}.so applic
 	@ echo "============ TESTING ./applic WITH DMTCP ================="
-	# Kill an old coordinator on this port if present, just in case.
 	${DMTCP_ROOT}/bin/dmtcp_launch --quiet --coord-port ${DEMO_PORT} \
 	  --with-plugin $$PWD/${LIBNAME}.so ./applic
 	@ echo ""
 	@ sleep 5
 
 res:
-	@ echo "===== RESTARTING USING ./dmtcp_restart_script.sh ============="
-	./dmtcp_restart_script.sh
+	@ echo "===== RESTARTING USING checkpoint file ============="
+	dmtcp_restart -j ckpt*.dmtcp
 	@ echo ""
 
 ${LIBNAME}.so: ${LIBOBJS}

@@ -26,39 +26,8 @@ applic_initiated_ckpt_event_hook(DmtcpEvent_t event, DmtcpEventData_t *data)
 static void
 checkpoint()
 {
-  system("docker ps > file");
-  system("python parse.py");
-  int fd = open("filep",O_RDONLY);
-  char buf[1000];
-  int num = read(fd,buf,0);
-  char cont[10][12];
-  int i,j;
-  for (i = 0;i<10;i++) {
-    for (j=0; j<12; j++) {
-      cont[i][j] = buf[j];
-    }
-  }
-  printf("Here");
-  for(j=0;j<12;j++){
-    printf("%c",cont[1][j]);
-  }
-  
-	printf("Done");
-char cmd_rm[50];
-    char cmd_create[50];
-    char argv[3]; 
-    strcpy(cmd_rm,"docker checkpoint rm ");
-    strcpy(cmd_create,"docker checkpoint create ");
-    argv[1] = cont[1];
-	printf("%s",cont[1]);
-    argv[2] = " ckp1";
-    argv[3] = NULL;
-    strcat(cmd_rm,argv);
-    strcat(cmd_create,argv);
-    system(cmd_rm);
-    system(cmd_create);
-    printf("CKP");
-close(fd);
+  system("python ckp.py");
+
 }
 static void
 resume()
@@ -70,7 +39,7 @@ resume()
 static void
 restart()
 {
-  system("docker start --checkpoint ckp1 looper");
+  system("python res.py");
   printf("Plugin(%s:%d): done restarting from checkpoint image.\n",
          __FILE__, __LINE__);
 }
